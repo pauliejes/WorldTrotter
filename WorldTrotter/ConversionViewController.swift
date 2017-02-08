@@ -52,6 +52,8 @@ class ConversionViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("ConversionViewController loded its view.")
+        
         updateCelsiusLabel()
     }
     
@@ -62,20 +64,37 @@ class ConversionViewController: UIViewController, UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        let existingTextHasDecimalSeparator = textField.text?.range(of: ".")
-        let replacementTextHasDecimalSeparator = string.range(of: ".")
+        let currentLocale = Locale.current
+        let decimalSeparator = currentLocale.decimalSeparator ?? "."
+        
+        let existingTextHasDecimalSeparator = textField.text?.range(of: decimalSeparator)
+        let replacementTextHasDecimalSeparator = string.range(of: decimalSeparator)
+        
+        //Disable any non integer input
+        let permittedInput = CharacterSet.decimalDigits
+        let charSet = CharacterSet(charactersIn: string)
         
         if existingTextHasDecimalSeparator != nil && replacementTextHasDecimalSeparator != nil {
             return false
-        } else {
-            return true
+        } else { //Rerurn the input if int value
+            return permittedInput.isSuperset(of: charSet)
         }
     }
     
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        let hour = NSCalendar.currentCalendar.component(NSCalendar.Unit.hour, from: NSDate())
+//        if (hour > 18 || hour < 6) {
+//            view.backgroundColor = UIColor.lightGray
+//        } else {
+//            view.backgroundColor = UIColor.white
+//        }
+//    }
+    
     //Update fahrenheit value based on the input
     @IBAction func fahrenheitFieldEditingChanged(_ textField: UITextField) {
-        if let text = textField.text, let value = Double(text) {
-            fahrenheitValue = Measurement(value: value, unit: .fahrenheit)
+        if let text = textField.text, let number = numberFormatter.number(from: text) {
+            fahrenheitValue = Measurement(value: number.doubleValue, unit: .fahrenheit)
         } else {
             fahrenheitValue = nil
         }
