@@ -81,15 +81,16 @@ class ConversionViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func randomColor() -> UIColor {
+        return UIColor(red:   CGFloat(arc4random()) / CGFloat(UInt32.max),
+                                green: CGFloat(arc4random()) / CGFloat(UInt32.max),
+                                blue:  CGFloat(arc4random()) / CGFloat(UInt32.max),
+                                alpha: 1.0)
+    }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        let hour = NSCalendar.currentCalendar.component(NSCalendar.Unit.hour, from: NSDate())
-//        if (hour > 18 || hour < 6) {
-//            view.backgroundColor = UIColor.lightGray
-//        } else {
-//            view.backgroundColor = UIColor.white
-//        }
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        view.backgroundColor = randomColor()
+    }
     
     //Update fahrenheit value based on the input
     @IBAction func fahrenheitFieldEditingChanged(_ textField: UITextField) {

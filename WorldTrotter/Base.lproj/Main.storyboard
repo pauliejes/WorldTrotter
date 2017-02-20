@@ -112,18 +112,35 @@
             </objects>
             <point key="canvasLocation" x="2264.8000000000002" y="314.39280359820094"/>
         </scene>
+        <!--Web-->
+        <scene sceneID="ynI-bd-FJU">
+            <objects>
+                <viewController title="Web" id="Cal-iW-wCl" customClass="WebViewController" customModule="WorldTrotter" customModuleProvider="target" sceneMemberID="viewController">
+                    <webView key="view" contentMode="scaleToFill" id="28Y-CZ-fmz">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </webView>
+                    <tabBarItem key="tabBarItem" title="Web" image="WebIcon" id="0a4-Wz-wL6"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bbu-kh-DFK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3206" y="315"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="B5e-Ef-4EP">
             <objects>
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="tDI-UP-SkO" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="WUd-tj-78M">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="ZtX-2a-pvr"/>
                         <segue destination="3AD-6j-VcK" kind="relationship" relationship="viewControllers" id="Mac-6f-1Dz"/>
+                        <segue destination="Cal-iW-wCl" kind="relationship" relationship="viewControllers" id="cXb-px-ADC"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YIb-7h-hRC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -134,5 +151,6 @@
     <resources>
         <image name="ConvertIcon" width="49" height="33"/>
         <image name="MapIcon" width="49" height="33"/>
+        <image name="WebIcon" width="48" height="32"/>
     </resources>
 </document>
