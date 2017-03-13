@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		22BC541E1E5AA5A1002F5EC2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BC541D1E5AA5A1002F5EC2 /* WebKit.framework */; };
 		22BC54201E5AAAF3002F5EC2 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BC541F1E5AAAF3002F5EC2 /* WebViewController.swift */; };
+		22BD377F1E622BE700BFEFD2 /* wavvy.png in Resources */ = {isa = PBXBuildFile; fileRef = 22BD377E1E622BE700BFEFD2 /* wavvy.png */; };
 		22DF33511E4B5B3C00F777E4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22DF33501E4B5B3C00F777E4 /* MapKit.framework */; };
 		22DF33531E4B624100F777E4 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DF33521E4B624100F777E4 /* MapViewController.swift */; };
 		22DF335C1E4B744000F777E4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22DF335E1E4B744000F777E4 /* Localizable.strings */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		22BC541D1E5AA5A1002F5EC2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		22BC541F1E5AAAF3002F5EC2 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		22BD377E1E622BE700BFEFD2 /* wavvy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wavvy.png; sourceTree = "<group>"; };
 		22DF33501E4B5B3C00F777E4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		22DF33521E4B624100F777E4 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		22DF33551E4B705D00F777E4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				6BB4AB711B7BD4C500967615 /* ConversionViewController.swift */,
 				6BB4AB471B7A5D4200967615 /* Main.storyboard */,
 				22BC541F1E5AAAF3002F5EC2 /* WebViewController.swift */,
+				22BD377E1E622BE700BFEFD2 /* wavvy.png */,
 				22DF33521E4B624100F777E4 /* MapViewController.swift */,
 				22DF335E1E4B744000F777E4 /* Localizable.strings */,
 				6BB4AB4A1B7A5D4200967615 /* Assets.xcassets */,
@@ -262,6 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22BD377F1E622BE700BFEFD2 /* wavvy.png in Resources */,
 				6BB4AB4E1B7A5D4200967615 /* LaunchScreen.storyboard in Resources */,
 				22DF335C1E4B744000F777E4 /* Localizable.strings in Resources */,
 				6BB4AB4B1B7A5D4200967615 /* Assets.xcassets in Resources */,

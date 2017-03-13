@@ -17,10 +17,22 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     
     let locationManager = CLLocationManager()
     
+    let locations = [
+        ["title": "Home",    "latitude": 38.906635, "longitude": -77.10192],
+        ["title": "School", "latitude": 35.973233, "longitude": -79.99504],
+        ["title": "Work",     "latitude": 38.832972, "longitude": -77.117442]
+    ]
+    
     var pins = [MKPointAnnotation]()
+    var pinCount = 0
+    var device = UIDevice.current
     
-    var locBtnPressed : Bool = true
+    //keep track of starting location
+    let startLoc = MKPointAnnotation()
     
+    //keep track of starting span
+    var startSpan: MKCoordinateSpan!
+
     override func loadView() {
         //Create a map view
         mapView = MKMapView()
@@ -37,169 +49,139 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         let locationControl: UIButton = UIButton(frame: CGRect(x: 265, y: 580, width: 100, height: 30))
         let pinControl: UIButton = UIButton(frame: CGRect(x: 10, y: 580, width: 50, height: 30))
         
-        locationControl.backgroundColor = UIColor.green.withAlphaComponent(0.50)
+        print(String(describing: device))
+        
+//        switch device {
+//            case .iPhone5:
+//                print("No TouchID sensor")
+//            case .iPhone5S:
+//                fallthrough
+//            case .iPhone6:
+//                fallthrough
+//            case .iPhone6plus:
+//                fallthrough
+//            case .iPhone6S:
+//                fallthrough
+//            case .iPhone6Splus:
+//                print("Put your thumb on the " + UIDevice().type.rawValue + " sensor thingy")
+//            case .iPhone7:
+//                print("Izza 7")
+//            case .iPhone7plus:
+//                print("Izza plus")
+//            default:
+//                print("I am not equipped to handle this device")
+//        }
+        
+        
+        //For loop to set annotations and add them to the pins array
+        for location in locations {
+            var count = 0
+            let annotation = MKPointAnnotation()
+            annotation.title = location["title"] as? String
+            annotation.coordinate = CLLocationCoordinate2D(latitude: location["latitude"] as! Double, longitude: location["longitude"] as! Double)
+            pins.append(annotation)
+            count += 1
+        }
+        
+        //Setup location button
+        locationControl.backgroundColor = UIColor.green.withAlphaComponent(0.5)
         locationControl.setTitle("Locate Me", for: .normal)
         locationControl.addTarget(self, action: #selector(MapViewController.locButton(_:)), for: UIControlEvents.touchUpInside)
         locationControl.tag = 1
         self.view.addSubview(locationControl)
         
-        pinControl.backgroundColor = UIColor.purple.withAlphaComponent(0.50)
+        //Setup pin button
+        pinControl.backgroundColor = UIColor.purple.withAlphaComponent(0.5)
         pinControl.setTitle("Pin", for: .normal)
         pinControl.addTarget(self, action: #selector(MapViewController.pinButton(_:)), for: UIControlEvents.touchUpInside)
         pinControl.tag = 1
         self.view.addSubview(pinControl)
         
+        //Setup segment control bar
         segmentedControl.backgroundColor = UIColor.white.withAlphaComponent(0.5)
         segmentedControl.selectedSegmentIndex = 0
-        
         segmentedControl.addTarget(self, action: #selector(MapViewController.mapTypeChanged(_:)), for: .valueChanged)
-        
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(segmentedControl)
         
+        //Set the constraints of the segControl Bar
         let topConstraint = segmentedControl.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 8)
         let margins = view.layoutMarginsGuide
         let leadingConstraint = segmentedControl.leadingAnchor.constraint(equalTo: margins.leadingAnchor)
         let trailingConstraint = segmentedControl.trailingAnchor.constraint(equalTo: margins.trailingAnchor)
-  
+        
         topConstraint.isActive = true
         leadingConstraint.isActive = true
         trailingConstraint.isActive = true
         
     }
 
+    //Button to set mapview to current user locaion, or jump back to original map location
     func locButton(_ sender: UIButton) {
         
-        if locBtnPressed {
+        //If you are showing the current location, jump back to origin. Otherwise show the current location
+        if mapView.showsUserLocation {
             
-            locBtnPressed = false
+            let span:MKCoordinateSpan = MKCoordinateSpanMake(startSpan.latitudeDelta, startSpan.longitudeDelta)
+            let region: MKCoordinateRegion = MKCoordinateRegionMake(startLoc.coordinate, span)
+            mapView.setRegion(region, animated: true)
+            mapView.showsUserLocation = false
             
+        } else {
+            
+            startLoc.coordinate = mapView.centerCoordinate
+            startSpan = mapView.region.span
             mapView.showsUserLocation = true
             mapView.delegate = self;
             mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true);
             
-        } else {
-            
-            locBtnPressed = true
-            
-            
         }
-
-        
     }
     
-
+    //When the user presses the pin button the mapView jumps to the first pin.
+    //continuesd pressing moves the focus to the next pin.
+    //If you press pin three times, the next press will return the view back
+    //to the current location.
     func pinButton(_ sender: UIButton) {
-        print("Pin Dropped")
         
-        var pinCount = 0
-        
-        switch pinCount {
-        case 0:
+        //If you press pin a fourth time, go to last location and reset the pincount
+        if pinCount == 3 {
             
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = mapView.centerCoordinate
-            mapView.addAnnotation(annotation)
-            pins.append(annotation)
-            
-            let pinToZoomOn = pins[0]
-            
-            let span = MKCoordinateSpanMake(0.5, 0.5)
-            
-            let region = MKCoordinateRegion(center: pinToZoomOn.coordinate, span: span)
-            
-            mapView.setRegion(region, animated: true)
-            
-            pinCount += 1
-            
-        case 1:
-            
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = mapView.centerCoordinate
-            mapView.addAnnotation(annotation)
-            pins.append(annotation)
-            
-            let pinToZoomOn = pins[1]
-            
-            let span = MKCoordinateSpanMake(0.5, 0.5)
-            
-            let region = MKCoordinateRegion(center: pinToZoomOn.coordinate, span: span)
-            
-            mapView.setRegion(region, animated: true)
-            
-            pinCount += 1
-            
-        case 2:
-            
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = mapView.centerCoordinate
-            mapView.addAnnotation(annotation)
-            pins.append(annotation)
-            
-            let pinToZoomOn = pins[2]
-            
-            let span = MKCoordinateSpanMake(0.5, 0.5)
-            
-            let region = MKCoordinateRegion(center: pinToZoomOn.coordinate, span: span)
-            
-            mapView.setRegion(region, animated: true)
+            mapView.removeAnnotation(pins[pinCount-1])
             
             pinCount = 0
             
-        default:
-            break
+            let span:MKCoordinateSpan = MKCoordinateSpanMake(startSpan.latitudeDelta, startSpan.longitudeDelta)
+            let region: MKCoordinateRegion = MKCoordinateRegionMake(startLoc.coordinate, span)
+            
+            mapView.setRegion(region, animated: true)
+            mapView.showsUserLocation = false
+            
+        } else {
+            
+            //If no pins have been set, record the current mapView location so you can go back
+            if pinCount == 0 {
+                startLoc.coordinate = mapView.centerCoordinate
+                startSpan = mapView.region.span
+            } else { //If a pin has been set, remove the previous pin before adding a new one
+                mapView.removeAnnotation(pins[pinCount-1])
+            }
+            
+            let pinZoom = pins[pinCount]
+            
+            mapView.addAnnotation(pins[pinCount])
+            
+            let span = MKCoordinateSpanMake(0.5, 0.5)
+            let region = MKCoordinateRegion(center: pinZoom.coordinate, span: span)
+            mapView.setRegion(region, animated: true)
+            
+            //incriment pin count
+            pinCount = (pinCount + 1)%4
         }
-        
-//        if pins.isEmpty {
-//        
-//            let annotation = MKPointAnnotation()
-//            annotation.coordinate = mapView.centerCoordinate
-//            mapView.addAnnotation(annotation)
-//            pins.append(annotation)
-//            
-//            let pinToZoomOn = pins[0]
-//            
-//            let span = MKCoordinateSpanMake(0.5, 0.5)
-//            
-//            let region = MKCoordinateRegion(center: pinToZoomOn.coordinate, span: span)
-//            
-//            mapView.setRegion(region, animated: true)
-//
-//            
-//        } else if pins.count == 1 {
-//            
-//            let annotation = MKPointAnnotation()
-//            annotation.coordinate = mapView.centerCoordinate
-//            mapView.addAnnotation(annotation)
-//            pins.append(annotation)
-//            
-//            let pinToZoomOn = pins[1]
-//            
-//            let span = MKCoordinateSpanMake(0.5, 0.5)
-//            
-//            let region = MKCoordinateRegion(center: pinToZoomOn.coordinate, span: span)
-//            
-//            mapView.setRegion(region, animated: true)
-//            
-//        } else if pins.count == 2 {
-//
-//            let annotation = MKPointAnnotation()
-//            annotation.coordinate = mapView.centerCoordinate
-//            mapView.addAnnotation(annotation)
-//            pins.append(annotation)
-//            
-//            let pinToZoomOn = pins[2]
-//            
-//            let span = MKCoordinateSpanMake(0.5, 0.5)
-//            
-//            let region = MKCoordinateRegion(center: pinToZoomOn.coordinate, span: span)
-//            
-//            mapView.setRegion(region, animated: true)
-//            
-//        }
+
     }
 
-    
+    //Switch control for maptype
     func mapTypeChanged(_ segControl: UISegmentedControl) {
         switch segControl.selectedSegmentIndex {
         case 0:
